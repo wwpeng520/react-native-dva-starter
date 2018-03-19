@@ -7,6 +7,11 @@ import {
   addNavigationHelpers,
   NavigationActions,
 } from 'react-navigation'
+import {
+  initializeListeners,
+  createReduxBoundAddListener,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers'
 import { connect } from 'react-redux'
 
 import Loading from './containers/Loading'
@@ -25,7 +30,7 @@ const HomeNavigator = TabNavigator(
     tabBarPosition: 'bottom',
     swipeEnabled: false,
     animationEnabled: false,
-    lazyLoad: true,
+    lazyLoad: false,
   }
 )
 
@@ -88,10 +93,20 @@ function getCurrentScreen(navigationState) {
   return route.routeName
 }
 
+export const routerMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.router
+)
+const addListener = createReduxBoundAddListener('root')
+
 @connect(({ app, router }) => ({ app, router }))
 class Router extends PureComponent {
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle)
+  }
+
+  componentDidMount() {
+    initializeListeners('root', this.props.router)
   }
 
   componentWillUnmount() {
@@ -114,7 +129,11 @@ class Router extends PureComponent {
     const { dispatch, app, router } = this.props
     if (app.loading) return <Loading />
 
-    const navigation = addNavigationHelpers({ dispatch, state: router })
+    const navigation = addNavigationHelpers({
+      dispatch,
+      state: router,
+      addListener,
+    })
     return <AppNavigator navigation={navigation} />
   }
 }
