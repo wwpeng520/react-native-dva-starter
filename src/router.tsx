@@ -27,8 +27,8 @@ import color from './config/color';
 import screen from './utils/screen';
 
 import Tab1 from './routes/tab1/tab1';
-import Tab2 from './routes/tab1/tab1';
-import Tab3 from './routes/tab1/tab1';
+import Tab2 from './routes/tab2/tab2';
+import Tab3 from './routes/tab2/tab2';
 import Tab4 from './routes/tab1/tab1';
 
 // import Setting from './routes/common/setting';
