@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"module": "es2015",
+		"target": "es2015",
+		"moduleResolution": "node",
+		"jsx": "react",
+		"outDir": "build",
+		"skipLibCheck": true,
+		"noImplicitAny": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"preserveConstEnums": true,
+		"sourceMap": true,
+    "strict": true,
+    "watch": true
+	},
+	"filesGlob": [
+		"src/**/*"
+	],
+	"exclude": [
+		"index.js",
+    "build",
+    "scripts.js",
+    "templates",
+		"node_modules",
+		"__tests__"
+	]
+}
