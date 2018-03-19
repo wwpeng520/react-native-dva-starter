@@ -9,7 +9,7 @@
     "lint": "eslint app",
     "format": "yarn prettier && yarn lint -- --fix",
     "rename": "react-native-rename",
-    "scripts": "node scripts.js",
+    "scripts": "node scripts/create.js",
     "precommit": "yarn format"
   },
   "dependencies": {

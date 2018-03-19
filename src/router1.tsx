@@ -8,7 +8,6 @@ import {
   NavigationScreenProps
 } from 'react-navigation';
 import {
-  initializeListeners,
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
@@ -23,7 +22,6 @@ import {
 } from 'react-native';
 import { Toast } from 'antd-mobile';
 import { connect } from 'dva-no-router';
-// import { connect } from 'react-redux'
 import * as _ from 'lodash';
 import color from './config/color';
 import screen from './utils/screen';
@@ -42,7 +40,6 @@ import Tab4 from './routes/tab1/tab1';
 // import Notifications from './routes/common/notifications';
 
 // import Browser from './routes/common/browser';
-import Loading from './routes/common/loading';
 
 const homeActiveIcon = require("../assets/images/tabbar/homeactive.png");
 const userActiveIcon = require("../assets/images/tabbar/useractive.png");
@@ -180,7 +177,7 @@ const MainNavigator = StackNavigator(
       gesturesEnabled: false, // defaults to true on iOS, false on Android.
     },
   }
-)
+);
 const RootNavigator = StackNavigator(
   {
     Root: { screen: MainNavigator },
@@ -213,89 +210,127 @@ const RootNavigator = StackNavigator(
       },
     }),
   }
-)
-
-function getCurrentScreen(navigationState: any): string | null {
-  // console.log('router: getCurrentScreen');
-  if (!navigationState) {
-    return null
-  }
-  const route = navigationState.routes[navigationState.index]
-  if (route.routes) {
-    return getCurrentScreen(route)
-  }
-  return route.routeName
-}
-
-export const routerMiddleware = createReactNavigationReduxMiddleware(
-  'root',
-  (state: any) => state.router
-)
-const addListener = createReduxBoundAddListener('root')
+);
 
 interface IDvaRouterPropTypes {
   dispatch: any;
   router: any;
-  app?: any;
 }
 
-@connect(({ app, router }: any) => ({ app, router }))
-export default class DvaRouter extends React.PureComponent<IDvaRouterPropTypes, any> {
-  componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.backHandle)
-  }
+// const middleware = createReactNavigationReduxMiddleware(
+//   "root",
+//   (state: any) => state.router
+// );
+// const addListener = createReduxBoundAddListener("root");
+
+class DvaRouter extends React.PureComponent<IDvaRouterPropTypes, any> {
 
   componentDidMount() {
-    initializeListeners('root', this.props.router)
+    BackHandler.addEventListener('hardwareBackPress', this.onBackAndroid);
   }
-
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.backHandle)
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackAndroid);
+    lastBackPressed = null;
   }
 
-  backHandle = () => {
-    const currentScreen = getCurrentScreen(this.props.router)
-    if (currentScreen === 'Login') {
-      return true
+  _actionEventSubscribers = new Set();
+
+  _addListener = (eventName: string, handler: any) => {
+    // console.log('@@@@@@@@@')
+    // console.log(eventName) // willFocus,didFocus,willBlur,didBlur,action
+    // console.log(handler)
+
+    if (eventName !== 'action') {
+      return { remove: () => { } };
     }
-    if (currentScreen !== 'Home') {
-      this.props.dispatch(NavigationActions.back())
-      return true
+    this._actionEventSubscribers.add(handler);
+    return {
+      remove: () => {
+        this._actionEventSubscribers.delete(handler);
+      },
+    };
+  };
+
+  onBackAndroid = () => {
+    const routes: any[] = _.get(this.props.router, 'routes[0].routes', []);
+    if (routes.length === 1) {
+      if (lastBackPressed && lastBackPressed + 2000 >= Date.now()) {
+        BackHandler.exitApp();
+        return false;
+      }
+      lastBackPressed = Date.now();
+      Toast.info('再点击一次退出应用', 2);
+      return true;
     }
-    return false
+
+    if (routes.length >= 1) {
+      this.props.dispatch(NavigationActions.back());
+      return true;
+    }
   }
 
   render() {
-    const { dispatch, app, router } = this.props
-    if (app && app.loading) return <Loading />
-
     const navigation = addNavigationHelpers({
-      dispatch,
-      state: router,
-      addListener,
-    })
-    return <RootNavigator navigation={navigation} screenProps={{ routeName: getCurrentScreen(this.props.router) }} />
+      dispatch: this.props.dispatch,
+      state: this.props.router,
+      addListener: this._addListener,
+    });
+
+    // console.log('navigation -----> ');
+    // console.log(navigation);
+
+    const root = _.get(this.props.router, 'routes[0].routes');
+    const routes = _.get(root[root.length - 1], 'routes');
+    let currentRouteName;
+
+    if (routes && routes.length) {
+      const index = _.get(root[root.length - 1], 'index');
+      currentRouteName = _.get(routes[index], 'routeName');
+    } else {
+      currentRouteName = _.get(root[root.length - 1], 'routeName')
+    }
+
+    // console.log('root ----- > ', root);
+
+    // 动态设置状态栏底色
+    // if (_.get(root[root.length - 1], 'routeName') === 'Browser') {
+    //   // 由 Browser 参数决定
+    // } else if ((root.length === 1 && root[0].routeName === 'Main' && root[0].index === 3)
+    //   || _.get(root[root.length - 1], 'routeName') === 'Distribution') {
+    //   if (Platform.OS === 'android') {
+    //     StatusBar.setBackgroundColor('transparent', false);
+    //     StatusBar.setTranslucent(true); // 否则点击系统通知进入app时顶部会有留白
+    //   }
+    //   StatusBar.setBarStyle('light-content', false);
+    // } else {
+    //   if (Platform.OS === 'android') {
+    //     StatusBar.setBackgroundColor(color.banner, false);
+    //     StatusBar.setTranslucent(true);
+    //   }
+    //   StatusBar.setBarStyle('dark-content', false)
+    // }
+
+    return <RootNavigator navigation={navigation} screenProps={{ routeName: currentRouteName }} />
   }
 }
 
 export function routerReducer(state: any, action: any) {
   // 拦截路由: 自定义回退页面函数 dispatch({ type: 'GoBack', backIndex: 2 }) -- 回退两个页面
-  // 新版 react-navigation 有 NavigationActions.pop({ n: 2 }) 方法，不需自定义了
-  // if (state && action.type === 'GoBack') {
-  //   let innerRoutes = state.routes[0].routes;
-  //   const backIndex = _.get(action, 'backIndex', 1); // 传递需要回退页面数量
-  //   innerRoutes = innerRoutes.slice(0, state.routes[0].routes.length - backIndex);
-  //   let routes = [{
-  //     index: state.routes[0].index - backIndex,
-  //     routes: innerRoutes,
-  //     key: state.routes[0].key,
-  //     routeName: state.routes[0].routeName
-  //   }]
-  //   return {
-  //     routes,
-  //     index: state.index,
-  //   };
-  // }
+  if (state && action.type === 'GoBack') {
+    let innerRoutes = state.routes[0].routes;
+    const backIndex = _.get(action, 'backIndex', 1); // 传递需要回退页面数量
+    innerRoutes = innerRoutes.slice(0, state.routes[0].routes.length - backIndex);
+    let routes = [{
+      index: state.routes[0].index - backIndex,
+      routes: innerRoutes,
+      key: state.routes[0].key,
+      routeName: state.routes[0].routeName
+    }]
+    return {
+      routes,
+      index: state.index,
+    };
+  }
 
   // 避免快速点击时重复跳转
   if (state && action.type === NavigationActions.NAVIGATE) {
@@ -316,3 +351,5 @@ function routeIsInCurrentState(state: any, routeName: string): any {
   }
   return false
 }
+
+export default connect((state: any) => ({ router: state.router }))(DvaRouter);
