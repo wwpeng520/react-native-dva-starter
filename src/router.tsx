@@ -69,7 +69,7 @@ const Tab = TabNavigator(
     Tab2: {
       screen: Tab2,
       navigationOptions: {
-        header: null,
+        // header: null,
         tabBarLabel: 'Tab2',
         tabBarIcon: ({ focused, tintColor }: { focused?: boolean, tintColor?: string }) => (
           <Image
@@ -97,7 +97,6 @@ const Tab = TabNavigator(
     Tab4: {
       screen: Tab4,
       navigationOptions: {
-        // header: null,
         tabBarLabel: 'Tab4',
         tabBarIcon: ({ focused, tintColor }: { focused?: boolean, tintColor?: string }) => (
           <Image
@@ -293,25 +292,23 @@ class DvaRouter extends React.PureComponent<IDvaRouterPropTypes, any> {
 
     // console.log('root ----- > ', root);
 
-    // index === 3 : 我的页面
     // 动态设置状态栏底色
-    if (_.get(root[root.length - 1], 'routeName') === 'Browser') {
-      // 由 Browser 参数决定
-    } else if ((root.length === 1 && root[0].routeName === 'Main' && root[0].index === 3)
-      || _.get(root[root.length - 1], 'routeName') === 'Distribution') {
-      if (Platform.OS === 'android') {
-        StatusBar.setBackgroundColor('transparent', false);
-        StatusBar.setTranslucent(true); // 否则点击系统通知进入app时顶部会有留白
-      }
-      StatusBar.setBarStyle('light-content', false);
-    } else {
-      if (Platform.OS === 'android') {
-        StatusBar.setBackgroundColor(color.banner, false);
-        StatusBar.setTranslucent(true);
-      }
-      StatusBar.setBarStyle('dark-content', false)
-      // StatusBar.setHidden(false, 'slide');
-    }
+    // if (_.get(root[root.length - 1], 'routeName') === 'Browser') {
+    //   // 由 Browser 参数决定
+    // } else if ((root.length === 1 && root[0].routeName === 'Main' && root[0].index === 3)
+    //   || _.get(root[root.length - 1], 'routeName') === 'Distribution') {
+    //   if (Platform.OS === 'android') {
+    //     StatusBar.setBackgroundColor('transparent', false);
+    //     StatusBar.setTranslucent(true); // 否则点击系统通知进入app时顶部会有留白
+    //   }
+    //   StatusBar.setBarStyle('light-content', false);
+    // } else {
+    //   if (Platform.OS === 'android') {
+    //     StatusBar.setBackgroundColor(color.banner, false);
+    //     StatusBar.setTranslucent(true);
+    //   }
+    //   StatusBar.setBarStyle('dark-content', false)
+    // }
 
     return <RootNavigator navigation={navigation} screenProps={{ routeName: currentRouteName }} />
   }
