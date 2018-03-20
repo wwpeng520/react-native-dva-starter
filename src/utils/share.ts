@@ -7,10 +7,10 @@ export enum ShareType {
     WechatTimeline,
 }
 
-WeChat.registerApp('wx6c1dc17af8ab4dcb').then((res: any) => {
-    console.log('### TONGBUQUAN ### registerApp', res);
+WeChat.registerApp('wx8448a9a52b7cc711').then((res: any) => {
+    console.log('### tbq ### registerApp', res);
 }).catch((e: any) => {
-    console.log('### TONGBUQUAN ### registerApp error', e);
+    console.log('### tbq ### registerApp error', e);
 })
 
 // Code example to share text notifications:
@@ -84,19 +84,19 @@ export async function shareWebPage(title: string, desc: string, url: string, typ
             shareObj.thumbImage = resolveAssetSource(imageResource).uri
         }
         if (type == ShareType.WechatSession) {
-            console.log('### TONGBUQUAN before WeChat.shareToSession: ');
+            console.log('### tbq before WeChat.shareToSession: ');
             const result = await WeChat.shareToSession(shareObj);
-            console.log('### TONGBUQUAN WeChat.shareToSession successful:', result);
+            console.log('### tbq WeChat.shareToSession successful:', result);
         } else if (type == ShareType.WechatTimeline) {
-            console.log('### TONGBUQUAN before WeChat.shareToTimeline: ');
+            console.log('### tbq before WeChat.shareToTimeline: ');
             const result = await WeChat.shareToTimeline(shareObj);
-            console.log('### TONGBUQUAN WeChat.shareToTimeline successful:', result);
+            console.log('### tbq WeChat.shareToTimeline successful:', result);
         }
         setTimeout(function () {
             Toast.success('分享成功', 2);
         }, 500);
     } catch (e) {
-        console.log('### TONGBUQUAN shareWebPage error: ', e);
+        console.log('### tbq shareWebPage error: ', e);
         setTimeout(function () {
             Toast.success('分享失败', 2);
         }, 500);

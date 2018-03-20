@@ -27,34 +27,6 @@ export class CError {
 
 var ErrorCodesFromServer: any = {};
 
-export function initErrorCodeToMessage() {
-  AsyncStorage.getItem(ERROR_CODE_FROM_SERVER)
-    .then((errCodes: any) => {
-      console.log("errCodes", errCodes);
-      try {
-        errCodes = JSON.parse(errCodes);
-      } catch (e) {
-        errCodes = {};
-      }
-      getApi(`${API_URL.ERROR_CODE_INIT}?version=${CONFIG.APP_VERSION}`)
-        .then((res: any) => {
-          if (res && typeof res === "object") {
-            ErrorCodesFromServer = res;
-            AsyncStorage.setItem(ERROR_CODE_FROM_SERVER, JSON.stringify(res));
-          } else {
-            if (errCodes && typeof errCodes === "object") {
-              ErrorCodesFromServer = errCodes;
-            }
-          }
-        })
-        .catch(() => {
-          if (errCodes && typeof errCodes === "object") {
-            ErrorCodesFromServer = errCodes;
-          }
-        });
-    });
-}
-
 export const DefaultErrors: any = {
   "10001": {
     "showMessage": "未知错误"

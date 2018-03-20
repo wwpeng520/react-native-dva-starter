@@ -31,3 +31,5 @@ os.system("cp ../assets/dva-core/prefixNamespace.js ../node_modules/dva-core/lib
 os.system("cp ../assets/@types/react-navigation/index.d.ts ../node_modules/@types/react-navigation/index.d.ts")
 
 os.system("cp ../assets/react-native-scrollable-tab-view/ScrollableTabBar.js ../node_modules/react-native-scrollable-tab-view/ScrollableTabBar.js")
+
+os.system("cp ../assets/react-native-tab-navigator/Badge.js ../node_modules/react-native-tab-navigator/Badge.js")

@@ -93,5 +93,18 @@
   "time": 59743,
   "weibo_icon1": 59744,
   "weibo_icon2": 59745,
-  "weibo_icon3": 59746
+  "weibo_icon3": 59746,
+  "share1": 59749,
+  "colse": 59751,
+  "fire": 59753,
+  "fire2": 59752,
+  "clear": 59754,
+  "uncheck": 59755,
+  "checked2": 59760,
+  "file": 59756,
+  "dropdown": 59757,
+  "email": 59758,
+  "card": 59761,
+  "delete2": 59762,
+  "jingque": 59763
 }

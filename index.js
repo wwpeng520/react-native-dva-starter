@@ -1,5 +1,3 @@
-// import './app/index'
-
 import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
 import App from './build/app';
@@ -14,4 +12,4 @@ if (!__DEV__) {
 }
 console.log('__DEV__: ', __DEV__);
 
-AppRegistry.registerComponent('DvaTSStarter', () => App);
+AppRegistry.registerComponent('RNDvaTSBoilerplate', () => App);

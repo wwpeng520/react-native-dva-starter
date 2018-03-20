@@ -8,13 +8,7 @@ import notifications from './models/notifications';
 import config from './models/config';
 import version from './models/version';
 
-interface IDvaRouterPropTypes {
-  dispatch: any;
-  router: any;
-  app?: any;
-}
-
-class App extends React.Component<IDvaRouterPropTypes, any> {
+class App extends React.Component {
   app = dva({
     extraReducers: {
       router: routerReducer,
@@ -33,8 +27,7 @@ class App extends React.Component<IDvaRouterPropTypes, any> {
     this.app.model(notifications);
     this.app.model(config);
     this.app.model(version);
-    this.app.router(() => <Router dispatch={this.props.dispatch} router={this.props.router} />);
-    // this.app.router(() => <Router />);
+    this.app.router(() => <Router />);
 
     this.setState({ init: true });
   }

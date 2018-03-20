@@ -40,7 +40,7 @@ export function update(updateInfo: IVersion) {
     return false;
   } else if (Platform.OS === 'ios' && (platform === 'all' || platform === 'ios')) {
     if (updateInfo && updateInfo.iosStoreLink) {
-      // Linking.openURL(updateInfo.iosStoreLink || "http://www.tongbuquan.com/");
+      // Linking.openURL(updateInfo.iosStoreLink || "http://www.tbq.com/");
       // NativeModules.upgrade.openAPPStore(CONFIG.APP_STORE_ID);
 
       Linking.openURL(getAppStoreUrl(CONFIG.APP_STORE_ID))

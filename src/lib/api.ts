@@ -43,7 +43,7 @@ export async function getApi(url: string, token?: string, isNeedHeader?: boolean
   if (option && option.timeout) {
     timeout = option.timeout;
   }
-  console.log('### tongbuquan-test ###');
+  console.log('### tbq-test ###');
   console.log('GETAPI### fetchData', fetchData);
   console.log('GETAPI### url', url);
 

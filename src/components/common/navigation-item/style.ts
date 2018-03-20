@@ -17,7 +17,9 @@ const style: INavigationItemStyle = {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 0.03 * screen.width,
+    padding: 0.02 * screen.width,
+    paddingLeft: 0.03 * screen.width,
+    paddingRight: 0.03 * screen.width,
   },
   icon: {
     width: 0.055 * screen.width,

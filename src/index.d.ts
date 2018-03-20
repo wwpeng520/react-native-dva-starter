@@ -1,5 +1,6 @@
 declare module 'dva-no-router';
 declare module 'dva-core';
+declare module 'react-native-tab-navigator';
 declare module 'react-redux';
 declare module 'react-native-image-gallery';
 declare module 'react-native-scrollable-tab-view';

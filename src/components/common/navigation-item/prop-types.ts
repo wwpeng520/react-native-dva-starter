@@ -7,4 +7,7 @@ export interface INavigationItemProps extends INavigationProps {
   title?: string;
   titleStyle?: Object;
   onPress?: any;
+  IcomoonName?: string;
+  IcomoonSize?: number;
+  IcomoonColor?: string;
 }

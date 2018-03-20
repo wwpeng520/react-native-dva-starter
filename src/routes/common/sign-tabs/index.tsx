@@ -28,7 +28,7 @@ export default class Sign extends React.PureComponent<ISignProps, any> {
   };
 
   static navigationOptions = ({ navigation }: { navigation?: any }) => ({
-    title: "同步圈",
+    title: "xxxx",
     headerLeft: <BackBtn dispatch navigation={navigation} />,
     headerRight: <View />
   });

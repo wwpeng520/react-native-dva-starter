@@ -23,15 +23,11 @@ import {
 } from 'react-native';
 import { Toast } from 'antd-mobile';
 import { connect } from 'dva-no-router';
-// import { connect } from 'react-redux'
+
 import * as _ from 'lodash';
 import color from './config/color';
 import screen from './utils/screen';
-
-import Tab1 from './routes/tab1/tab1';
-import Tab2 from './routes/tab2/tab2';
-import Tab3 from './routes/tab2/tab2';
-import Tab4 from './routes/tab1/tab1';
+import MainTabs from './routes/main-tabs';
 
 // import Setting from './routes/common/setting';
 // import About from './routes/common/about';
@@ -44,103 +40,18 @@ import Tab4 from './routes/tab1/tab1';
 // import Browser from './routes/common/browser';
 import Loading from './routes/common/loading';
 
-const homeActiveIcon = require("../assets/images/tabbar/homeactive.png");
-const userActiveIcon = require("../assets/images/tabbar/useractive.png");
-const discovery2Icon = require("../assets/images/tabbar/discovery2.png");
-const accountIcon = require("../assets/images/tabbar/account.png");
+const xifenIcon = require("../assets/images/tabbar/xifen.png");
+const xifenActiveIcon = require("../assets/images/tabbar/xifen-active.png");
+const hufenIcon = require("../assets/images/tabbar/hufen.png");
+const hufenActiveIcon = require("../assets/images/tabbar/hufen-active.png");
+const mineIcon = require("../assets/images/tabbar/mine.png");
+const mineActiveIcon = require("../assets/images/tabbar/mine-active.png");
 
 const anyEasing: any = Easing;
-let lastBackPressed: number | null;
-
-const tabIconSize = screen.height * 0.03;
-const Tab = TabNavigator(
-  {
-    Tab1: {
-      screen: Tab1,
-      path: '/home',
-      navigationOptions: {
-        tabBarLabel: 'Tab1',
-        // 注意：默认情况下，该图标仅在iOS上显示
-        tabBarIcon: ({ focused, tintColor }: { focused?: boolean, tintColor?: string }) => (
-          <Image
-            source={homeActiveIcon}
-            style={{ width: tabIconSize, height: tabIconSize, tintColor: tintColor }}
-          />
-        )
-      }
-    },
-    Tab2: {
-      screen: Tab2,
-      navigationOptions: {
-        // header: null,
-        tabBarLabel: 'Tab2',
-        tabBarIcon: ({ focused, tintColor }: { focused?: boolean, tintColor?: string }) => (
-          <Image
-            source={accountIcon}
-            style={{ width: tabIconSize, height: tabIconSize, tintColor: tintColor }}
-          />
-        ),
-        // tabBarOnPress: ({ jumpToIndex, previousScene, scene }: any) => {
-        //   jumpToIndex(scene.index);
-        // }
-      }
-    },
-    Tab3: {
-      screen: Tab3,
-      navigationOptions: {
-        tabBarLabel: 'Tab3',
-        tabBarIcon: ({ focused, tintColor }: { focused?: boolean, tintColor?: string }) => (
-          <Image
-            source={discovery2Icon}
-            style={{ width: tabIconSize, height: tabIconSize, tintColor: tintColor }}
-          />
-        )
-      }
-    },
-    Tab4: {
-      screen: Tab4,
-      navigationOptions: {
-        tabBarLabel: 'Tab4',
-        tabBarIcon: ({ focused, tintColor }: { focused?: boolean, tintColor?: string }) => (
-          <Image
-            source={userActiveIcon}
-            style={{ width: tabIconSize, height: tabIconSize, tintColor: tintColor }}
-          />
-        )
-      }
-    },
-  },
-  {
-    tabBarComponent: TabBarBottom, // 解决安卓上不显示icon
-    tabBarPosition: 'bottom',
-    swipeEnabled: false, // true
-    animationEnabled: false,
-    // lazy: true,
-    tabBarOptions: {
-      //  activeTintColor和inactiveTintColor会传递到上面的tabBarIcon中的tintColor
-      activeTintColor: color.tabbarActiveColor,
-      inactiveTintColor: color.tabbarInactiveColor,
-      // 标签栏样式
-      style: {
-        backgroundColor: '#ffffff',
-        borderTopWidth: screen.onePixel,
-        borderTopColor: color.lightBorder,
-        height: screen.height * 0.07,
-        justifyContent: 'center',
-      },
-      // 标签标题样式
-      labelStyle: {
-        fontSize: screen.height * 0.015,
-        // lineHeight: screen.height * 0.018,
-        marginBottom: screen.height * 0.01,
-      },
-    },
-  }
-)
 
 const MainNavigator = StackNavigator(
   {
-    Main: { screen: Tab },
+    Main: { screen: MainTabs },
     // Browser: { screen: Browser },
 
     // Setting: { screen: Setting },
@@ -172,8 +83,10 @@ const MainNavigator = StackNavigator(
       headerTitleStyle: { // 设置返回标题(back title)的样式
         alignSelf: 'center', // 安卓上顶部标题居中
         fontSize: screen.height * 0.025,
-        color: '#333',
+        color: '#fff',
         fontWeight: '400',
+        flexGrow: 1,
+        textAlign: 'center',
       },
       headerBackTitle: null, // 跳转页面左侧返回箭头后面的文字
       // headerTintColor: color.tabbarActiveColor, // 设置标题颜色
@@ -234,13 +147,21 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 const addListener = createReduxBoundAddListener('root')
 
 interface IDvaRouterPropTypes {
-  dispatch: any;
-  router: any;
+  dispatch?: any;
+  router?: any;
   app?: any;
 }
 
 @connect(({ app, router }: any) => ({ app, router }))
 export default class DvaRouter extends React.PureComponent<IDvaRouterPropTypes, any> {
+  constructor(props: IDvaRouterPropTypes) {
+    super(props);
+    StatusBar.setBarStyle('light-content')
+    if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor(color.banner, false);
+      StatusBar.setTranslucent(true); // 否则点击系统通知进入app时顶部会有留白
+    }
+  }
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle)
   }

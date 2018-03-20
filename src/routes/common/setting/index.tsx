@@ -150,7 +150,7 @@ export default class Setting extends React.PureComponent<ISettingProps, any> {
                 this.props.navigation.navigate('About', {});
                 mObserver.setEvent("About");
               }}
-            >关于同步圈</Item>
+            >关于xxx</Item>
           </List>
           <WhiteSpace />
 

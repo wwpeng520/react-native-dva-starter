@@ -5,7 +5,6 @@ import {
     NativeAppEventEmitter
 } from "react-native"
 import JPushModule from "jpush-react-native";
-import { NotificationType } from "../constants";
 import store from "react-native-simple-store";
 import user from "../models/user";
 import index from "antd-mobile/lib/toast";
@@ -53,25 +52,25 @@ class PushController {
         if (!userId) {
             return;
         }
-        let alias = `tongbuquanUser${userId}`;
-        console.log("####TONGBUQUANLOGCAT ### SETALIAS ", alias);
+        let alias = `tbqUser${userId}`;
+        console.log("####tbqLOGCAT ### SETALIAS ", alias);
         store.get(JPUSH_ALIAS_KEY)
             .then((storedAlias: any) => {
                 if (alias === storedAlias) {
                     return;
                 }
-                console.log("####TONGBUQUANLOGCAT ### SETALIAS ### START ", alias);
+                console.log("####tbqLOGCAT ### SETALIAS ### START ", alias);
                 JPushModule.setAlias(alias, () => { });
             });
     }
 
     register() {
         //test
-        console.log("####TONGBUQUANLOGCAT ### register")
+        console.log("####tbqLOGCAT ### register")
         if (Platform.OS == "ios") {
             JPushModule.setBadge(0, () => { });
             // JPushModule.addOpenNotificationLaunchAppListener(notification => {
-            //     console.log("####TONGBUQUANLOGCAT ### addOpenNotificationLaunchAppListener:", notification);
+            //     console.log("####tbqLOGCAT ### addOpenNotificationLaunchAppListener:", notification);
             //     if (notification) {
             //         this.onReceiveMessage(notification);
             //     }
@@ -88,25 +87,25 @@ class PushController {
         } else {
             JPushModule.initPush();
             JPushModule.notifyJSDidLoad((data) => {
-                console.log("####TONGBUQUANLOGCAT ###  notifyJSDidLoad", data)
+                console.log("####tbqLOGCAT ###  notifyJSDidLoad", data)
             });
             JPushModule.getInfo(function (info) {
                 console.log(info);
             });
             // JPushModule.addReceiveCustomMsgListener((message) => {
-            //     console.log("####TONGBUQUANLOGCAT ###  addReceiveCustomMsgListener", message)
+            //     console.log("####tbqLOGCAT ###  addReceiveCustomMsgListener", message)
             //     var data = JSON.parse(message);
             // });
 
             // JPushModule.addReceiveNotificationListener((notification) => {
-            //     console.log("####TONGBUQUANLOGCAT ###  addReceiveNotificationListener", notification)
+            //     console.log("####tbqLOGCAT ###  addReceiveNotificationListener", notification)
             //     if (notification) {
             //         this.onReceiveMessage(notification);
             //     }
             // });
 
             JPushModule.addReceiveOpenNotificationListener((notification) => {
-                console.log("####TONGBUQUANLOGCAT ###  addReceiveOpenNotificationListener:", notification);
+                console.log("####tbqLOGCAT ###  addReceiveOpenNotificationListener:", notification);
                 if (notification) {
                     this.onReceiveMessage(notification);
                 }
@@ -118,7 +117,7 @@ class PushController {
 
     onReceiveMessage(data: any) {
         setTimeout(() => {
-            console.log('### TONGBUQUANLOG ### openNotificationHandler ', data);
+            console.log('### tbqLOG ### openNotificationHandler ', data);
             let item;
             if (data.extra) {
                 try {
@@ -132,9 +131,9 @@ class PushController {
             //     item = data;
             // }
 
-            console.log("TONGBUQUAN ", item)
+            console.log("tbq ", item)
             const type = _.get(item, 'type');
-            console.log("### TONGBUQUANLOG ### typeee: ", type);
+            console.log("### tbqLOG ### typeee: ", type);
             switch (type) {
                 case 'webview':
                     {

@@ -38,7 +38,7 @@ export default class ModalVersion extends React.PureComponent<IModalVersionProps
     const { version, onClose } = this.props;
     const res = update(version);
     if (res && Platform.OS === 'android') {
-      console.log('### TONGBUQUAN LOG update 开始下载 ### ', res);
+      console.log('### tbq LOG update 开始下载 ### ', res);
       if (version.isForceUpdate) {
         this.setState({
           btnDisabled: true,

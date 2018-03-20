@@ -98,11 +98,21 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.dvatsstarter"
+        applicationId "com.rndvatsboilerplate"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "xxxxxxxxxxxxxxxxxxxxxxxx",
+                APP_CHANNEL : "default"
+        ]
+
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "",
+                APP_CHANNEL : "default"
+        ]
+
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -137,6 +147,17 @@ android {
 }
 
 dependencies {
+    compile project(':@remobile/react-native-file-transfer')
+    compile project(':jcore-react-native')
+    compile project(':jpush-react-native')
+    compile project(':RCTWeChat')
+    compile project(':rn-umeng')
+    compile project(':react-native-image-picker')
+    compile project(':react-native-image-resizer')
+    compile project(':react-native-linear-gradient')
+    compile project(':react-native-device-info')
+    compile project(':react-native-share')
+    compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules

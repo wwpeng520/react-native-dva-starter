@@ -39,7 +39,7 @@ export default class Browser extends React.Component<IBrowserProps, any> {
           console.log('分享链接给好友');
           const shareOptions = {
             title: _.get(navigation, 'state.params.title'),
-            message: `分享链接：#同步圈# 「${_.get(navigation, 'state.params.title')}」 `,
+            message: `分享链接：#xxxx# 「${_.get(navigation, 'state.params.title')}」 `,
             url: _.get(navigation, 'state.params.url', CONFIG.WEB_HOST),
             subject: "分享链接" //  for email 
           };

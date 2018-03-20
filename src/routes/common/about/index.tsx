@@ -31,7 +31,7 @@ export default class About extends React.PureComponent<IAboutProps, any> {
   };
 
   static navigationOptions = ({ navigation }: any) => ({
-    title: "关于同步圈",
+    title: "xxx",
     headerLeft: <BackBtn dispatch navigation={navigation} />,
     headerRight: <View />
   });
@@ -67,10 +67,10 @@ export default class About extends React.PureComponent<IAboutProps, any> {
             <Item thumb={this.wechatIcon}
               styles={StyleSheet.create(listStyle)}
               onClick={() => {
-                Clipboard.setString('tongbuquany');
+                Clipboard.setString('xxx');
                 Toast.info('已复制微信号', 2);
               }}
-              extra={<Text style={{ fontSize: screen.width * 0.035, color: '#999' }}>tongbuquany</Text>}
+              extra={<Text style={{ fontSize: screen.width * 0.035, color: '#999' }}>tbqy</Text>}
             >  微信客服</Item>
           </List>
 
@@ -87,7 +87,7 @@ export default class About extends React.PureComponent<IAboutProps, any> {
             >  使用服务协议</Item>
           </List>
 
-          <LittleName style={indicatorStyles.copyright}>Copyright © 2018 同步圈 All Rights Reserved</LittleName>
+          <LittleName style={indicatorStyles.copyright}>Copyright © 2018 xxx All Rights Reserved</LittleName>
 
         </View>
       </SafeAreaView>
